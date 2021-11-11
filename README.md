@@ -27,10 +27,10 @@ You can view the project layout through [this link](https://www.figma.com/file/7
 - [ ] Print statement functionality
 - [ ] Obfuscate values
 
-## :memo: License
+## 📝 License
 
 This project is under the MIT license. See the [LICENSE](LICENSE.md) file for more details.
 
 ---
 
-<p align="center"><sub>Made with ♥ by sestevao & Rocketseat :wave:</sub></p>
+<p align="center"><sub>Made with ♥ by @sestevao & @rocketseat :wave:</sub></p>

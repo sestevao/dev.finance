@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>dev.finance$</title>
+    <link rel="shortcut icon" href="assets/icon.png" />
 
     <link rel="stylesheet" href="./style.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -13,8 +14,14 @@
     />
   </head>
   <body>
+    <div class="dark-mode">
+      <button>
+        <img src="./assets/sun.svg" alt="change mode" />
+      </button>
+    </div>
+
     <header>
-      <img src="./assets/logo.svg" alt="Logo Dev Finance" />
+      <img class="logo" src="./assets/logo.svg" alt="Logo Dev Finance" />
     </header>
 
     <main class="container">
@@ -40,7 +47,13 @@
         <div class="card total">
           <h3>
             <span>Total</span>
-            <img src="./assets/pound.svg" alt="Image de total" />
+            <div>
+              <button>
+                <img src="./assets/check2.svg" alt="Image de saídas" />
+              </button>
+
+              <img src="./assets/pound.svg" alt="Image de total" />
+            </div>
           </h3>
           <p id="totalDisplay">£0,00</p>
         </div>
@@ -50,7 +63,7 @@
         <h2 class="sr-only">Transactions</h2>
 
         <a href="#" onclick="Modal.open()" class="button new"
-          >+ New Transaction</a
+          >+New transaction</a
         >
 
         <table id="data-table">
@@ -78,7 +91,7 @@
                 type="text"
                 id="description"
                 name="description"
-                placeholder="Description"
+                placeholder="escription"
               />
             </div>
 
