@@ -1,5 +1,5 @@
-  <img alt="dev.finances" title="dev.finances" src="assets/logo.svg" width="220px" />
-
+  <img alt="dev.finances" title="dev.finances" src="assets/logo.svg" width="220px" text-align="center"/>
+<br><br>
 ## 💻 About
 
 dev.finances is a financial control application, where you can register and delete transactions and see the input and output balance 💰
