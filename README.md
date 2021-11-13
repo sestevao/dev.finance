@@ -20,11 +20,11 @@ You can view the project layout through [this link](https://www.figma.com/file/7
 ## 🛠️ Features
 
 - [x] Dark/Light Theme
-- [ ] Listing of finances
+- [x] Listing of finances
 - [x] Possibility to edit the desired finance
 - [x] Possibility of deleting the desired finance
 - [x] Print statement functionality
-- [ ] Obfuscate values
+- [x] Obfuscate values
 
 ## 📝 License
 
