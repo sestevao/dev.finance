@@ -1,4 +1,4 @@
-<img alt="dev.finances" title="dev.finances" src="assets/logo.svg" width="220px" valign="center"/>
+<img alt="dev.finances" title="dev.finances" src="./assets/img/logo.svg" width="220px" valign="center"/>
 <br><br>
 
 ## 💻 About
