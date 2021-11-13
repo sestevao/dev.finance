@@ -1,14 +1,3 @@
-const Modal = {
-  open() {
-    //Abrir modal //Adicionar a class active ao modal
-    document.querySelector(".modal-overlay").classList.add("active");
-  },
-  close() {
-    //fechar o modal //remover a class active do modal
-    document.querySelector(".modal-overlay").classList.remove("active");
-  },
-};
-
 const Storage = {
   get() {
     return JSON.parse(localStorage.getItem("dev.finances:transactions")) || [];
@@ -35,28 +24,95 @@ const Transaction = {
     App.reload();
   },
 
+  edit(index) {
+    Modal.open("Edit Transition", true);
+
+    let transaction = Transaction.all[index];
+    let description = document.querySelector('input[name="description"]');
+    let amount = document.querySelector('input[name="amount"]');
+    let date = document.querySelector('input[name="date"]');
+    let id = document.querySelector('input[name="transactionId"]');
+
+    id.value = index;
+    description.value = transaction.description;
+    amount.value = Number(transaction.amount) / 100;
+    date.value = transaction.date.split("/").reverse().join("-");
+  },
+
+  update(transaction, idTransaction) {
+    Transaction.all.forEach((value, index) => {
+      if (idTransaction == index) {
+        value.description = transaction.description;
+        value.amount = transaction.amount;
+        value.date = transaction.date;
+      }
+    });
+
+    Storage.set(Transaction.all);
+    App.reload();
+  },
+
   incomes() {
     let income = 0;
+
     Transaction.all.forEach((transaction) => {
       if (transaction.amount > 0) {
         income += transaction.amount;
       }
     });
+
     return income;
   },
 
   expenses() {
     let expense = 0;
+
     Transaction.all.forEach((transaction) => {
       if (transaction.amount < 0) {
         expense += transaction.amount;
       }
     });
+
     return expense;
   },
 
   total() {
     return Transaction.incomes() + Transaction.expenses();
+  },
+
+  extract() {
+    const allTransitions = Transaction.all;
+    const incomes = Transaction.incomes();
+    const expenses = Transaction.expenses();
+    const total = Transaction.total();
+
+    const now = new Date();
+
+    const date = {
+      day: now.getDate(),
+      month: now.getMonth() + 1,
+      year: now.getFullYear(),
+      hours: now.getHours(),
+      minutes: now.getMinutes(),
+      seconds: now.getSeconds(),
+    };
+
+    let text = `Statement - Date: ${`${date.day}/${date.month}/${date.year} - ${date.hours}:${date.minutes}:${date.seconds}\n`}
+    `;
+
+    text += allTransitions.reduce(
+      (txt, transaction) =>
+        (txt += `\n${transaction.date} - ${
+          transaction.description
+        }   ${Utils.formatCurrency(transaction.amount)}`),
+      "\n"
+    );
+
+    text += `\n\nIncomes:   ${Utils.formatCurrency(incomes)}`;
+    text += `\nExpenses:  ${Utils.formatCurrency(expenses)}`;
+    text += `\nTotal:     ${Utils.formatCurrency(total)}`;
+
+    Utils.download(text, "dev.finances.txt", "application/text");
   },
 };
 
@@ -65,6 +121,7 @@ const DOM = {
 
   addTransaction(transaction, index) {
     const tr = document.createElement("tr");
+
     tr.innerHTML = DOM.innerHTMLTransaction(transaction, index);
     tr.dataset.index = index;
 
@@ -78,9 +135,10 @@ const DOM = {
     const html = `
         <td class="description">${transaction.description}</td>
         <td class="${CSSclass}">${amount}</td>
-        <td class="date">${transaction.date}</td>
-        <td><img onclick="Transaction.remove(${index})" src="./assets/minus.svg" alt="Remover transação"></td>
-        `;
+        <td class="date">${transaction.date}</td>        
+        <td class="edit"><img src="./assets/img/edit.svg" onclick="Transaction.edit(${index})" title="Edit transaction" /></td>
+        <td class="delete"><img src="./assets/img/trash.svg" onclick="Transaction.remove(${index})" title="Remove transaction" /></td>
+    `;
 
     return html;
   },
@@ -118,20 +176,33 @@ const Utils = {
 
     value = String(value).replace(/\D/g, "");
     value = Number(value) / 100;
-
-    value = value.toLocaleString("pt-BR", {
+    value = value.toLocaleString("en-GB", {
       style: "currency",
       currency: "GBP",
     });
 
     return signal + value;
   },
+
+  download(data, name, type) {
+    const blob = new Blob([data], {
+      type: type,
+    });
+
+    const link = window.document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = `${name}`;
+    link.click();
+    window.URL.revokeObjectURL(link.href);
+
+    return;
+  },
 };
 
 const Form = {
-  description: document.querySelector("input#description"),
-  amount: document.querySelector("input#amount"),
-  date: document.querySelector("input#date"),
+  description: document.querySelector("#description"),
+  amount: document.querySelector("#amount"),
+  date: document.querySelector("#date"),
 
   getValues() {
     return {
@@ -149,7 +220,7 @@ const Form = {
       amount.trim() === "" ||
       date.trim() === ""
     ) {
-      throw new Error("Por favor, preencha todos os campos");
+      throw new Error("Please fill in all fields!");
     }
   },
 
@@ -176,8 +247,17 @@ const Form = {
 
     try {
       Form.validateFields();
-      const transaction = Form.formatValues();
-      Transaction.add(transaction);
+
+      if (document.querySelector(".modal #form").dataset.editable == "true") {
+        const index = document.querySelector(
+          'input[name="transactionId"]'
+        ).value;
+
+        Transaction.update(Form.formatValues(), index);
+      } else {
+        Transaction.add(Form.formatValues());
+      }
+
       Form.clearFields();
       Modal.close();
     } catch (error) {
@@ -189,6 +269,7 @@ const Form = {
 const App = {
   init() {
     Transaction.all.forEach(DOM.addTransaction);
+
     DOM.updateBalance();
     Storage.set(Transaction.all);
   },

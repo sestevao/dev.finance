@@ -1,9 +1,23 @@
 /* Global ===================== */
 :root {
-  --dark-blue: #363f5f;
-  --green: #49aa26;
+  --font-color: #363f5f;
   --light-green: #3dd705;
+  --green: #49aa26;
   --red: #e92929;
+
+  --bg-color: #f0f2f5;
+  --bg-header: #2d4a22;
+  --bg-card: #fff;
+  --card-color: #fff;
+  --data-table: #969cb3;
+  --table-th: #fff;
+  --table-td: #fff;
+  --expense-color: #e92929;
+  --income-color: #12a454;
+  --modal-color: #f0f2f5;
+  --input-color: #fff;
+  --font-tooltip: #fff;
+  --bg-tooltip: #000;
 }
 
 * {
@@ -12,13 +26,10 @@
   box-sizing: border-box;
 }
 
-html {
-  font-size: 93.75%; /* 15px */
-}
-
 body {
-  background: #f0f2f5;
+  background: var(--bg-color);
   font-family: "Poppins", sans-serif;
+  font-size: 93.75%; /* 15px */
 }
 
 .sr-only {
@@ -38,19 +49,26 @@ body {
   margin: auto;
 }
 
+svg,
+img {
+  width: 32px;
+  height: 32px;
+}
+
 /* Titles ===================== */
 h2 {
   margin-top: 3.2rem;
   margin-bottom: 0.8rem;
-  color: var(--dark-blue);
+  color: var(--font-color);
 
   font-weight: normal;
 }
 
-/* Links & Buttons ===================== */
+/* Links & Buttons ============ */
 a {
   color: var(--green);
   text-decoration: none;
+  transition: color 0.2s;
 }
 
 a:hover {
@@ -61,11 +79,12 @@ button {
   width: 100%;
   height: 50px;
   border: none;
-  color: white;
+  color: var(--input-color);
   background: var(--green);
   padding: 0;
   border-radius: 0.25rem;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 button:hover {
@@ -83,9 +102,11 @@ button:hover {
   border: 2px var(--red) solid;
   border-radius: 0.25rem;
   height: 50px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   opacity: 0.6;
 }
 
@@ -95,43 +116,50 @@ button:hover {
 
 /* Header ===================== */
 header {
-  background: url("assets/background.jpg") 50% 80%;
+  background: var(--bg-header);
 
-  height: 20rem;
-  padding: 2rem;
+  padding: 1.2rem 0 10rem;
   text-align: center;
 }
 
 #logo {
-  color: #fff;
   font-weight: 100;
+  width: 100%;
 }
 
-/* Balance ===================== */
+/* Balance ==================== */
 #balance {
   margin-top: -8rem;
 }
 
 #balance h2 {
-  color: white;
+  color: var(--input-color);
   margin-top: 0;
 }
 
-/* Cards ===================== */
+/* Cards ====================== */
 .card {
-  background: white;
+  background: var(--bg-color);
+  color: var(--font-color);
+
   padding: 1.5rem 2rem;
-  border-radius: 0.25rem;
   margin-bottom: 2rem;
-  color: var(--dark-blue);
+
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 40%);
 }
 
 .card h3 {
   font-weight: normal;
   font-size: 1rem;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.card h3 .visible {
+  cursor: pointer;
 }
 
 .card p {
@@ -148,7 +176,8 @@ header {
 
 .card.total {
   background: var(--green);
-  color: white;
+  color: var(--card-color);
+  fill: var(--card-color);
 }
 
 .card.total div {
@@ -157,52 +186,69 @@ header {
   align-items: center;
 
   width: 45%;
+  height: 30px;
 }
 
-.card.income {
-  background: #12a454;
-  color: white;
-}
-
-.card.expense {
-  background: #e92929;
-  color: white;
-}
-
-.dark-mode {
-  position: absolute;
-  right: 0px;
-}
-
-.dark-mode img {
-  width: 32px;
-  height: 32px;
-}
-
-.dark-mode button {
-  width: 100%;
-  height: 50px;
-  border: none;
+.card.total button:hover {
   background: transparent;
-  padding: 0;
-  border-radius: 0.25rem;
-  cursor: pointer;
 }
 
-.dark-mode button:hover {
-  background: #e2ded0;
+.card.income h3,
+.card.income h3 img {
+  fill: var(--light-green);
+  color: var(--light-green);
 }
 
-/* Table ===================== */
+.card.expense h3,
+.card.expense h3 svg {
+  color: var(--red);
+  fill: var(--red);
+}
+
+/* Transaction ================ */
 #transaction {
   display: block;
   width: 100%;
-  overflow-x: auto;
+  overflow: hidden auto;
 }
+
+#transaction div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#transaction div .printer {
+  position: relative;
+  margin-bottom: 0.8rem;
+  cursor: pointer;
+}
+
+#transaction div .printer span {
+  position: absolute;
+  z-index: 10;
+  top: 60%;
+  right: 0%;
+  padding: 0.45rem 0.8rem;
+  font-size: 1rem;
+  white-space: nowrap;
+  background-color: var(--dark-blue);
+  color: var(--bg-color);
+  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+#transaction div .printer img:hover ~ span {
+  top: 100%;
+  opacity: 0.9;
+}
+
+/* Data from table ============ */
 #data-table {
   width: 100%;
   border-spacing: 0 0.5rem;
-  color: #969cb3;
+  color: var(--data-table);
 }
 
 table thead tr th:first-child,
@@ -216,7 +262,7 @@ table tbody tr td:last-child {
 }
 
 table thead th {
-  background: white;
+  background: var(--table-th);
 
   font-weight: normal;
   padding: 1rem 2rem;
@@ -233,23 +279,71 @@ table tbody tr:hover {
 }
 
 table tbody td {
-  background: white;
+  background: var(--table-th);
   padding: 1rem 2rem;
 }
 
+table tbody td:nth-child(4),
+table tbody td:nth-child(5) {
+  width: 36px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+table tbody td:nth-child(4) img,
+table tbody td:nth-child(5) img {
+  width: 20px;
+  height: 20px;
+}
+
 td.description {
-  color: var(--dark-blue);
+  color: var(--font-color);
 }
 
 td.income {
-  color: #12a454;
+  color: var(--light-green);
 }
 
 td.expense {
-  color: #e92929;
+  color: var(--red);
 }
 
-/* Modal ===================== */
+td.edit {
+  text-align: right;
+}
+
+td.edit svg {
+  cursor: pointer;
+  max-width: 20px;
+  margin-right: 5px;
+}
+
+td.edit svg g {
+  fill: var(--font-color);
+}
+
+td.edit svg:hover g {
+  fill: #354682;
+}
+
+td.delete {
+  text-align: center;
+}
+
+td.delete svg {
+  cursor: pointer;
+}
+
+td.delete svg path {
+  fill: var(--expense-color);
+}
+
+td.delete svg:hover path {
+  fill: rgba(255, 0, 0, 1);
+}
+
+/* Modal ================== */
 .modal-overlay {
   width: 100%;
   height: 100%;
@@ -270,13 +364,13 @@ td.expense {
 }
 
 .modal {
-  background: #f0f2f5;
+  background: var(--bg-color);
   padding: 2.4rem;
   position: relative;
   z-index: 1;
 }
 
-/* Form ===================== */
+/* Form =================== */
 #form {
   max-width: 500px;
 }
@@ -311,15 +405,15 @@ input {
   width: 48%;
 }
 
-/* Footer ===================== */
+/* Footer ================= */
 footer {
   text-align: center;
   padding: 4rem 0 2rem;
-  color: var(--dark-blue);
+  color: var(--font-color);
   opacity: 0.6;
 }
 
-/* Responsive ===================== */
+/* Responsive ============= */
 @media (min-width: 800px) {
   html {
     font-size: 87.5%;

@@ -1,27 +1,24 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>dev.finance$</title>
-    <link rel="shortcut icon" href="assets/icon.png" />
+    <link rel="shortcut icon" href="assets/img/icon.png" />
 
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap"
     />
+
+    <script src="./assets/js/js_modules/svg-inject.min.js"></script>
   </head>
   <body>
-    <div class="dark-mode">
-      <button>
-        <img src="./assets/sun.svg" alt="change mode" />
-      </button>
-    </div>
-
     <header>
-      <img class="logo" src="./assets/logo.svg" alt="Logo Dev Finance" />
+      <div id="dark-mode"></div>
+      <img src="./assets/img/logo.svg" alt="Logo Dev Finance" id="logo" />
     </header>
 
     <main class="container">
@@ -31,28 +28,34 @@
         <div class="card income">
           <h3>
             <span>Income</span>
-            <img src="./assets/income.svg" alt="Image de entradas" />
+            <img src="assets/img/income.svg" alt="income" />
           </h3>
-          <p class="income" id="incomeDisplay">£0,00</p>
+          <p class="income" id="incomeDisplay">£ 0,00</p>
         </div>
 
         <div class="card expense">
           <h3>
             <span>Expenses</span>
-            <img src="./assets/expense.svg" alt="Image de saídas" />
+            <img src="./assets/img/expense.svg" alt="expenses" />
           </h3>
-          <p class="expense" id="expenseDisplay">£0,00</p>
+          <p class="expense" id="expenseDisplay">£ 0,00</p>
         </div>
 
         <div class="card total">
           <h3>
             <span>Total</span>
+
             <div>
               <button>
-                <img src="./assets/check2.svg" alt="Image de saídas" />
+                <img
+                  src="./assets/img/eye-visible.svg"
+                  title="hidden amount"
+                  class="visible"
+                  id="visible"
+                />
               </button>
 
-              <img src="./assets/pound.svg" alt="Image de total" />
+              <img src="./assets/img/pound.svg" alt="Total" />
             </div>
           </h3>
           <p id="totalDisplay">£0,00</p>
@@ -62,9 +65,22 @@
       <section id="transaction">
         <h2 class="sr-only">Transactions</h2>
 
-        <a href="#" onclick="Modal.open()" class="button new"
-          >+New transaction</a
-        >
+        <div>
+          <a
+            href="#"
+            class="button new"
+            onclick="Modal.open('New transaction', false)"
+            >+ New transaction
+          </a>
+
+          <div class="printer">
+            <img
+              src="./assets/img/printer.svg"
+              title="Print Statement"
+              onclick="Transaction.extract()"
+            />
+          </div>
+        </div>
 
         <table id="data-table">
           <thead>
@@ -72,6 +88,7 @@
               <th>Description</th>
               <th>Amount</th>
               <th>Date</th>
+              <th></th>
               <th></th>
             </tr>
           </thead>
@@ -83,7 +100,8 @@
     <div class="modal-overlay">
       <div class="modal">
         <div id="form">
-          <h2>New Transaction</h2>
+          <h2></h2>
+
           <form action="" onsubmit="Form.submit(event)">
             <div class="input-group">
               <label class="sr-only" for="description">Description</label>
@@ -91,7 +109,7 @@
                 type="text"
                 id="description"
                 name="description"
-                placeholder="escription"
+                placeholder="Description"
               />
             </div>
 
@@ -110,15 +128,15 @@
               >
             </div>
 
+            <input type="hidden" name="transactionId">
+
             <div class="input-group">
               <label class="sr-only" for="date">Date</label>
               <input type="date" id="date" name="date" />
             </div>
 
             <div class="input-group actions">
-              <a onclick="Modal.close()" href="#" class="button cancel"
-                >Cancel</a
-              >
+              <a onclick="Modal.close()" href="#" class="button cancel">Cancel</a>
               <button>Save</button>
             </div>
           </form>
@@ -128,6 +146,9 @@
 
     <footer><p>dev.finance$</p></footer>
 
-    <script src="./scripts.js"></script>
+    <script src="./assets/js/scripts.js"></script>
+    <script src="./assets/js/dark-mode.js"></script>
+    <script src="./assets/js/modal.js"></script>
+    <script src="./assets/js/visible.js"></script>
   </body>
 </html>

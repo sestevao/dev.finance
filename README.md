@@ -1,5 +1,6 @@
-  <img alt="dev.finances" title="dev.finances" src="assets/logo.svg" width="220px" text-align="center"/>
+<img alt="dev.finances" title="dev.finances" src="assets/logo.svg" width="220px" valign="center"/>
 <br><br>
+
 ## 💻 About
 
 dev.finances is a financial control application, where you can register and delete transactions and see the input and output balance 💰
@@ -18,11 +19,11 @@ You can view the project layout through [this link](https://www.figma.com/file/7
 
 ## 🛠️ Features
 
-- [ ] Dark/Light Theme
+- [x] Dark/Light Theme
 - [ ] Listing of finances
-- [ ] Possibility to edit the desired finance
-- [ ] Possibility of deleting the desired finance
-- [ ] Print statement functionality
+- [x] Possibility to edit the desired finance
+- [x] Possibility of deleting the desired finance
+- [x] Print statement functionality
 - [ ] Obfuscate values
 
 ## 📝 License
